@@ -38,6 +38,18 @@ app.post('/markAsDone', (req, res) => {
         res.status(404).json({ error: 'Tellimust ei leitud' });
     }
 });
+app.post('/deleteOrder', (req, res) => {
+    const orderId = req.body.orderId;
+    const orderIndex = orders.findIndex(order => order.id === orderId);
+    if (orderIndex !== -1) {
+        orders.splice(orderIndex, 1); // Remove the order from the orders array
+        console.log('Order deleted:', orderId);
+        // Send the updated list of orders with details to both interfaces
+        res.json({ message: 'Order deleted successfully', orders });
+    } else {
+        res.status(404).json({ error: 'Order not found' });
+    }
+});
 
 // Route to get all orders
 app.get('/orders', (req, res) => {
